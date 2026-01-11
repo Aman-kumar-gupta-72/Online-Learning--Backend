@@ -19,7 +19,7 @@ const app = express()
 app.use(express.json())
 
 app.use(cors({
-  origin: ["https://online-learning-9yim.vercel.app/"],
+  origin: ["https://online-learning-9yim.vercel.app/", "http://localhost:5173", "http://localhost:3000"],
   credentials: true
 }));
 
@@ -28,11 +28,11 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 
 const Port = process.env.PORT || 2002
 
-app.use("/api",userRoutes)
+app.use("/api/user",userRoutes)
 
-app.use("/api",coursesRoutes)
-app.use("/api",adminRoutes)
-app.use("/api", paymentRoutes)
+app.use("/api/course",coursesRoutes)
+app.use("/api/admin",adminRoutes)
+app.use("/api/payment", paymentRoutes)
 
 app.get('/',(req,res)=>{
     res.send("server is running on")
