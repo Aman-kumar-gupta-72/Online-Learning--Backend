@@ -35,7 +35,7 @@ app.use("/api",adminRoutes)
 app.use("/api", paymentRoutes)
 
 app.get('/',(req,res)=>{
-    re.send("server is running on")
+    res.send("server is running on")
  })
  app.listen(Port,()=>{
     console.log(`Server is running on http://localhost:${Port}`);
