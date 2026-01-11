@@ -19,7 +19,7 @@ const app = express()
 app.use(express.json())
 
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: ["https://online-learning-9yim.vercel.app/"],
   credentials: true
 }));
 
