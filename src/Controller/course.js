@@ -8,18 +8,37 @@ export const getAllCourse = TryCatch(async(req , res) => {
 
     const courses = await Courses.find()
     
-   
+    // Ensure image URLs are absolute for production
+    const processedCourses = courses.map(course => ({
+      ...course.toObject(),
+      image: course.image && !course.image.startsWith('http') 
+        ? `${process.env.SERVER_URL || 'http://localhost:2000'}/uploads/${course.image}`
+        : course.image
+    }));
      
     res.json({
-        courses
+        courses: processedCourses
     })
 })
 
 export const getSingleCourse= TryCatch(async ( req , res)=>{
     const course = await Courses.findById(req.params.id)
+    
+    if(!course) {
+      return res.status(404).json({
+        message: "Course not found"
+      })
+    }
+    
+    const processedCourse = {
+      ...course.toObject(),
+      image: course.image && !course.image.startsWith('http') 
+        ? `${process.env.SERVER_URL || 'http://localhost:2000'}/uploads/${course.image}`
+        : course.image
+    };
 
     res.json({
-        course
+        course: processedCourse
     })
 })
 
