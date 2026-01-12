@@ -3,16 +3,20 @@ import { User } from "../Model/user.js";
 
 export const isAuth = async (req, res, next) => {
   try {
-    // Expect: Authorization: Bearer <token>
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    // Check for token in custom header OR Authorization header
+    let token;
+    
+    if (req.headers.token) {
+      // Custom token header (client-side format)
+      token = req.headers.token;
+    } else if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+      // Standard Authorization header format
+      token = req.headers.authorization.split(" ")[1];
+    } else {
       return res.status(401).json({
         message: "Please login first",
       });
     }
-
-    const token = authHeader.split(" ")[1];
 
     const decodedData = jwt.verify(token, process.env.JWT_SEC);
 
